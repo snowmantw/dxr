@@ -24,7 +24,10 @@ dev:
   ports:
     - "8000:8000"
   volumes:
-    - ../..:/home/dxr/dxr:Z
+    # XXX: Workaround for ro file system and directory of /home/dxr/dxr when mounting it
+    # If the original ":Z" flag is really necessary, set it in command line.
+    # Or, it will leave to blank so the issue won't happen.
+    - ../..:/home/dxr/dxr$Z
     - $SOURCE:/home/dxr/source
     - $CONFIG:/home/dxr/dxr.config
   volumes_from:
