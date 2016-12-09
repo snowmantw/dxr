@@ -22,7 +22,7 @@ dev:
   build: ./dev
   net: container:es
   ports:
-    - "8000:8000"
+    - "$PORT:8000"
   volumes:
     # XXX: Workaround for ro file system and directory of /home/dxr/dxr when mounting it
     # If the original ":Z" flag is really necessary, set it in command line.
