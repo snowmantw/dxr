@@ -10,7 +10,8 @@ apt-get -q update \
         python-pip python-virtualenv python2.7-dev \
         mercurial git \
         llvm-3.8 libclang-3.8-dev clang-3.8 \
-        curl apt-transport-https
+        curl apt-transport-https \
+        sudo lsb-release
 
 # Install newer node.
 apt-get remove -y nodejs
@@ -30,3 +31,6 @@ update-alternatives --force --install /usr/local/bin/llvm-config llvm-config /us
 update-alternatives --force --install /usr/local/bin/clang++ clang++ /usr/bin/clang++-3.8 0
 # And we might as well make a clang link so we can compile mozilla-central:
 update-alternatives --force --install /usr/local/bin/clang clang /usr/bin/clang-3.8 0
+
+# To prevent error cannot find clang++
+ln -s /usr/local/bin/clang++ /usr/bin/clang++

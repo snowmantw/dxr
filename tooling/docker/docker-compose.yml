@@ -5,18 +5,6 @@ es:
   ports:
     - "8000:8000"
 
-# An interactive container for experimentation and debugging
-dev:
-  build: ./dev
-  net: container:es
-  ports:
-    - "8000:8000"
-  volumes:
-    - ../..:/home/dxr/dxr:Z
-  volumes_from:
-    - code
-    - venv
-
 # A Data Volume Container to persist any code you might care to index. On a
 # Linux host, you can squirrel away code in the shared "dxr" source checkout,
 # but, on a Mac, /code will be more attractive because it offers better IO
@@ -28,3 +16,17 @@ code:
 # re-download all the Python packages every time the dev image is rebuilt
 venv:
   build: ./venv
+
+# An interactive container for experimentation and debugging
+dev:
+  build: ./dev
+  net: container:es
+  ports:
+    - "8000:8000"
+  volumes:
+    - ../..:/home/dxr/dxr:Z
+    - $SOURCE:/home/dxr/source
+    - $CONFIG:/home/dxr/dxr.config
+  volumes_from:
+    - code
+    - venv

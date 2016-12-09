@@ -58,6 +58,11 @@ DOCKER_COMPOSE := docker-compose -f tooling/docker/docker-compose.yml
 # automatically on "up".
 shell: docker_es
 	$(DOCKER_COMPOSE) build dev
+	$(DOCKER_COMPOSE) run dev bash
+
+# Process all and serve indexed result.
+exe: docker_es
+	$(DOCKER_COMPOSE) build dev
 	$(DOCKER_COMPOSE) run dev
 
 # Shut down the elasticsearch server when you're done.

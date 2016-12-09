@@ -8,8 +8,7 @@
 # some image size optimizations and introduce would-be security holes for the
 # sake of a good dev experience.
 
-# Ubuntu 14.04.3
-FROM ubuntu@sha256:0ca448cb174259ddb2ae6e213ebebe7590862d522fe38971e1175faedf0b6823
+FROM ubuntu:16.04
 
 MAINTAINER Erik Rose <erik@mozilla.com>
 
@@ -29,7 +28,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get -q -y install graphviz
 RUN useradd --create-home --home-dir /home/dxr --shell /bin/bash --groups sudo --uid 1000 dxr
 RUN echo "dxr:docker" | chpasswd
 VOLUME /home/dxr/dxr
-USER dxr
+
+# Provide dxr user sudo permission: some source projects may need to install additional system packages.
+RUN echo "%sudo ALL=(ALL) NOPASSWD:ALL" | sudo tee -a /etc/sudoers
 
 # Activate a virtualenv. make will make it later. Also, set SHELL so mach
 # doesn't complain while building Firefox. Other things probably expect it as
@@ -37,5 +38,7 @@ USER dxr
 ENV VIRTUAL_ENV=/venv PATH=/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin SHELL=/bin/bash
 
 WORKDIR /home/dxr/dxr
+USER dxr
 
 EXPOSE 8000
+CMD make all && cd /home/dxr && dxr index --config /home/dxr/dxr.config && dxr serve --all
