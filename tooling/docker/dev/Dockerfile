@@ -41,4 +41,5 @@ WORKDIR /home/dxr/dxr
 USER dxr
 
 EXPOSE 8000
-CMD make all && cd /home/dxr && dxr index --config /home/dxr/dxr.config && dxr serve --all
+CMD test -e /home/dxr/run && (chmod a+x /home/dxr/run && /home/dxr/run) || echo "No pre-defined command /home/dxr/run; exit container now."
+

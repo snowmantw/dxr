@@ -60,8 +60,8 @@ shell: docker_es
 	$(DOCKER_COMPOSE) build dev
 	$(DOCKER_COMPOSE) run dev bash
 
-# Process all and serve indexed result.
-exe: docker_es
+# Process all and serve indexed result, or other commands defined.
+run: docker_es
 	$(DOCKER_COMPOSE) build dev
 	$(DOCKER_COMPOSE) run dev
 

@@ -3,7 +3,7 @@
 es:
   build: ./es
   ports:
-    - "8000:8000"
+    - "$DXR_PORT:$DXR_PORT"
 
 # A Data Volume Container to persist any code you might care to index. On a
 # Linux host, you can squirrel away code in the shared "dxr" source checkout,
@@ -21,8 +21,10 @@ venv:
 dev:
   build: ./dev
   net: container:es
+  environment:
+    - DXR_PORT
   ports:
-    - "$PORT:8000"
+    - "$DXR_PORT:$DXR_PORT"
   volumes:
     # XXX: Workaround for ro file system and directory of /home/dxr/dxr when mounting it
     # If the original ":Z" flag is really necessary, set it in command line.
@@ -30,6 +32,8 @@ dev:
     - ../..:/home/dxr/dxr$Z
     - $SOURCE:/home/dxr/source
     - $CONFIG:/home/dxr/dxr.config
+    # Put command file to run
+    - $DXR_COMMAND_FILE:/home/dxr/run
   volumes_from:
     - code
     - venv
